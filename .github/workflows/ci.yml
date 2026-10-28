@@ -24,7 +24,7 @@ jobs:
 
       - name: Añadir feature al README
         run: |
-          echo "Añadida feature: $(date)" >> README.md
+          echo "Añadida feature: $GITHUB_REF_NAME" >> README.md
 
       - name: Mostrar README
         run: cat README.md

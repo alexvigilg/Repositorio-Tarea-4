@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+
+  pull_request:
+    branches:
+      - develop
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+  workflow_dispatch:
+
+jobs:
+  actualizar-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Añadir feature al README
+        run: |
+          echo "Añadida feature: $(date)" >> README.md
+
+      - name: Mostrar README
+        run: cat README.md
+
+  validar-token:
+    needs: actualizar-readme
+    runs-on: self-hosted
+
+    steps:
+      - name: Comparar DEV_TOKEN y LOCAL_DEV_TOKEN
+        shell: pwsh
+        env:
+          DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
+        run: |
+          if ($env:DEV_TOKEN -eq $env:LOCAL_DEV_TOKEN) {
+            Write-Host "Los tokens coinciden"
+          }
+          else {
+            Write-Host "Los tokens NO coinciden"
+            exit 1
+          }

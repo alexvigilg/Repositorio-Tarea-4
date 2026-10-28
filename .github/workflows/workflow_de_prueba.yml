@@ -1,0 +1,11 @@
+name: Prueba Runner
+
+on:
+  push:
+
+jobs:
+  prueba:
+    runs-on: self-hosted
+
+    steps:
+      - run: echo "Runner funcionando"
